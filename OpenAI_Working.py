@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'hellohowareyou'
-API = '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'
+API = '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'
 openai.api_key = API
 t = ""
 

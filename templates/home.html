@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <div class="container">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="logo" width="150" height="150" style="float: left; margin-right: 20px;" class="logo">    <title>DBQKAF</title>
+    <style>
+        body {
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .logo{
+        float: left;
+        margin-right: 20px;
+        margin-top: -25px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+            margin-right:150px;
+        }
+
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #ddd;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .header h1,
+        .header h2{
+        margin:0;
+        }
+        .tab-button.active {
+            background-color: #006699;
+            color: #fff;
+        }
+
+        form {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .custom-file-input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .custom-file-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            background-color: #006699;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="text-align=center">DBQKAF</h1>
+        <h2 style="text-align=center">Powered by OpenAI's ChatGPT ft. Python</h2>
+
+        <p>{{message}}</p>
+        {% if filename %}
+    <p>Uploaded file: {{ filename }}</p>
+    {% endif %}
+
+        <form action="/" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="file">Select File</label>
+                <input type="file" class="custom-file-input" name="file" id="file">
+                <div id="file-error" class="error-message"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">UPLOAD FILE</button>
+        </form>
+
+
+
+         <div class="container">
+    <!-- ... -->
+
+    <div class="tab-container">
+        <button id="summaryButton" class="tab-button" onclick="getSummary()">Summary</button>
+        <button id="glossaryButton" class="tab-button" onclick="getGlossary()">Glossary</button>
+        <button id="qnaButton" class="tab-button" onclick="getQuestionAndAnswer()">QnA</button>
+        <button id="mcqButton" class="tab-button" onclick="getQuestionMultipleChoice()">MCQ</button>
+    </div>
+
+    <!-- Add the loading spinner element -->
+    <div id="spinner" style="display: none; text-align: center;">
+        <img src="https://media.tenor.com/eL-cXQYmRjQAAAAC/loading-load.gif" alt="Loading" width="100" height="100">
+    </div>
+
+    <!-- ... -->
+</div>
+
+
+        <div id="result-container">
+
+            <p id="result"></p>
+        </div>
+
+        <!-- JavaScript code -->
+        <script>
+    function displayResult(result) {
+        // Update the result container with the provided result
+        var resultContainer = document.getElementById("result");
+        resultContainer.innerHTML = result.replace(/\n/g, "<br>");
+    }
+
+    function setLoading(loading) {
+        // Show/hide the loading spinner
+        var spinner = document.getElementById("spinner");
+        spinner.style.display = loading ? "block" : "none";
+    }
+
+    function setActiveButton(buttonId) {
+        // Remove the 'active' class from all buttons
+        var buttons = document.getElementsByClassName("tab-button");
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+
+        // Add the 'active' class to the clicked button
+        var button = document.getElementById(buttonId);
+        button.classList.add("active");
+    }
+
+    function getSummary() {
+        setLoading(true);
+
+        // Send an AJAX request to the getSummary endpoint
+        fetch("/getSummary", {
+            method: "POST",
+        })
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            displayResult(data);
+            setActiveButton("summaryButton");
+            setLoading(false);
+        })
+        .catch(function(error) {
+            console.log(error);
+            setLoading(false);
+        });
+    }
+
+    function getGlossary() {
+        setLoading(true);
+
+        // Send an AJAX request to the getGlossary endpoint
+        fetch("/getGlossary", {
+            method: "POST",
+        })
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            displayResult(data);
+            setActiveButton("glossaryButton");
+            setLoading(false);
+        })
+        .catch(function(error) {
+            console.log(error);
+            setLoading(false);
+        });
+    }
+
+    function getQuestionAndAnswer() {
+        setLoading(true);
+
+        // Send an AJAX request to the getQuestionAndAnswer endpoint
+        fetch("/getQuestionAndAnswer", {
+            method: "POST",
+        })
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            displayResult(data);
+            setActiveButton("qnaButton");
+            setLoading(false);
+        })
+        .catch(function(error) {
+            console.log(error);
+            setLoading(false);
+        });
+    }
+
+    function getQuestionMultipleChoice() {
+        setLoading(true);
+
+        // Send an AJAX request to the getQuestionMultipleChoice endpoint
+        fetch("/getQuestionMultipleChoice", {
+            method: "POST",
+        })
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            displayResult(data);
+            setActiveButton("mcqButton");
+            setLoading(false);
+        })
+        .catch(function(error) {
+            console.log(error);
+            setLoading(false);
+        });
+    }
+
+            function validateForm() {
+                var fileInput = document.getElementById("file");
+                var fileError = document.getElementById("file-error");
+                var file = fileInput.files[0];
+
+                if (!file) {
+                    fileError.textContent = "Please select a file.";
+                    return false;  // Prevent form submission
+                }
+
+                // Reset error message if a file is selected
+                fileError.textContent = "";
+
+                return true;  // Allow form submission
+            }
+        </script>
+    </div>
+</body>
+</html>
