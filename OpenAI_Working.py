@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify, render_template, session, redirect, flash
 import openai
 import os
+from dotenv import load_dotenv
+load_dotenv(override=True)
+
 
 app = Flask(__name__)
 app.secret_key = 'hellohowareyou'
-API = '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'
-openai.api_key = API
+openai.api_key=os.getenv("API_KEY")
 t = ""
 
 @app.route('/', methods=['GET', 'POST'])
