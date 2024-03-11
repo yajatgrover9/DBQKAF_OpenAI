@@ -6,8 +6,8 @@ load_dotenv(override=True)
 
 
 app = Flask(__name__)
-app.secret_key = 'hellohowareyou'
-openai.api_key=os.getenv("API_KEY")
+app.secret_key = os.getenv("OPENAI_SECRET_KEY")
+openai.api_key=os.getenv("OPENAI_API_KEY")
 t = ""
 
 @app.route('/', methods=['GET', 'POST'])

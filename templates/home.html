@@ -2,37 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <div class="container">
-<img align="left" src="https://miro.medium.com/v2/resize:fit:1100/format:webp/1*XzIRJGujfqAiOV2EIQgR_Q.png" alt="logo" width="200" height="150" style="float: left; margin-right: 20px;" class="logo">    <title>DBQKAF</title>
+    <div class="container" style="text-align: center;">
+<img align="left" src="https://media.licdn.com/dms/image/C4D12AQEfnB5eUECypQ/article-cover_image-shrink_423_752/0/1609606275382?e=1715817600&v=beta&t=9D0zih9FB_EmSm-iX3zEoQEQJZfFA7Q-P-tCeLYPajE" alt="logo" width="250" height="150" style="float: left; margin-right: 20px;" class="logo">    <title>DBQKAF</title>
     <style>
         body {
             background-color: #ffffff;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            text-align: center;
         }
         .logo{
-        float: left;
-        margin-right: 20px;
-        margin-top: -25px;
+
+
+            position:absolute;
+            margin: 0 auto;
+            left:100px;
+
+
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
+            padding :20px;
+            text-align: center;
         }
 
         h1 {
             color: #333;
             text-align: center;
             margin-bottom: 20px;
-            margin-right:150px;
+
         }
 
         .tab-container {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .tab-button {
@@ -49,7 +56,7 @@
         margin:0;
         }
         .tab-button.active {
-            background-color: #006699;
+            background-color: #009926;
             color: #fff;
         }
 
@@ -97,7 +104,7 @@
             padding: 10px;
             font-size: 16px;
             text-align: center;
-            background-color: #006699;
+            background-color: #009926;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -118,8 +125,8 @@
 </head>
 <body>
     <div class="container">
-        <h1 style="text-align=center">DBQKAF</h1>
-        <h2 style="text-align=center">Powered by OpenAI's ChatGPT ft. Python</h2>
+        <h1 style="text-align:center">DBQKAF</h1>
+        <h2 style="text-align:center">Powered by OpenAI's ChatGPT ft. FastAPI</h2>
 
         <p>{{message}}</p>
         {% if filename %}
