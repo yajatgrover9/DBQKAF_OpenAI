@@ -1,30 +1,67 @@
-from fastapi import FastAPI, Request, File, UploadFile
+from fastapi import FastAPI, Request, File, UploadFile,HTTPException, Depends
+from fastapi.security import APIKeyHeader
+from starlette.status import HTTP_403_FORBIDDEN
 from fastapi.templating import Jinja2Templates
 import openai
 import os
 from dotenv import load_dotenv
-load_dotenv(override=True)
+from sql_app.database import SessionLocal, engine
+from sql_app.models import UploadedFile
+from sql_app import models
 
+models.Base.metadata.create_all(engine)
+
+load_dotenv(override=True)
 app = FastAPI()
 app.secret_key = os.getenv("OPENAI_SECRET_KEY")
-openai.api_key=os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("OPENAI_API_KEY")
+API_KEY_NAME = "X-API-Key"
+api_key_header = APIKeyHeader(name=API_KEY_NAME)
 templates = Jinja2Templates(directory="templates")
 
-t = ""
+async def check_api_key(api_key: str = Depends(api_key_header)):
+    if api_key != openai.api_key:
+        raise HTTPException(status_code=HTTP_403_FORBIDDEN, detail="Invalid API Key")
+    return api_key
+
+# Protected route
+@app.get("/protected")
+async def protected_route(api_key: str = Depends(check_api_key)):
+    return {"message": "This is a protected route"}
+
+def get_db():
+    db=SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 @app.get('/')
 def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request, "message": "Awaiting Upload ..."})
 
-
+t=""
 @app.post('/')
 async def upload_file(request: Request, file: UploadFile = File(...)):
     global t
     text = await file.read()
+    content = text.decode("utf-8")
     t = text.decode("utf-8")
-    with open("uploads/"+file.filename, "wb") as f:
+    with open("uploads/" + file.filename, "wb") as f:
         f.write(text)
-    return templates.TemplateResponse("home.html", {"request": request, "message": "Success ! \n Awaiting new upload ...", "filename": file.filename})
+
+    new_file=UploadedFile(filename=file.filename, content=content)
+    db=SessionLocal()
+
+    existing_file = db.query(UploadedFile).filter(UploadedFile.filename == file.filename).first()
+    if existing_file:
+        return templates.TemplateResponse("home.html",
+                                          {"request": request, "message": "File with the same name already exists in db. \n Awaiting new upload ...", "filename": file.filename})
+    else:
+        db.add(new_file)
+        db.commit()
+        db.close()
+        return templates.TemplateResponse("home.html", {"request": request, "message": "Success ! \n Awaiting new upload ...", "filename": file.filename})
 
 
 @app.post('/getSummary')
