@@ -13,8 +13,10 @@ models.Base.metadata.create_all(engine)
 
 load_dotenv(override=True)
 app = FastAPI()
+
 app.secret_key = os.getenv("OPENAI_SECRET_KEY")
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
 API_KEY_NAME = "X-API-Key"
 api_key_header = APIKeyHeader(name=API_KEY_NAME)
 templates = Jinja2Templates(directory="templates")
