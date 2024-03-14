@@ -37,7 +37,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
 @app.get('/')
 def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request, "message": "Awaiting Upload ..."})
