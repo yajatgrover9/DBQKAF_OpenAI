@@ -5,9 +5,9 @@ DBQKAF is an innovative website-based software tool that harnesses the power of 
 This capability enables users to quickly and efficiently distill large amounts of text into concise summaries and relevant questions, facilitating better understanding and analysis of the content. Additionally, DBQKAF offers a range of other features, enhancing its utility and versatility for various applications.
 
 # Getting Started
-DBQKAF requires some modules to be installed, install them by running the following commands.
+DBQKAF requires some modules to be installed, install them by running the following command.
 
-<img width="611" alt="image" src="https://github.com/yajatgrover9/DBQKAF_OpenAI/assets/160128959/64c72f74-a616-4188-81c6-0994daab54b0">
+<img width="200" alt="image" src="https://github.com/yajatgrover9/DBQKAF_OpenAI/assets/160128959/be7c8791-984f-475f-b4fe-ab13231a4043">
 
 Import correct modules
 
@@ -17,7 +17,7 @@ Getting the uploaded file from user and storing unique files in db.
 
 <img width="797" alt="image" src="https://github.com/yajatgrover9/DBQKAF_OpenAI/assets/160128959/eb4eb50e-e29a-42fa-95cb-b2840835c71a">
 
-# Run the App 
+# Run the App using "python openai_fastapi.py"
 
 Finally, fire up the UI to see what happened!
 
