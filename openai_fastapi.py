@@ -54,16 +54,17 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
 
     new_file=UploadedFile(filename=file.filename, content=content)
     db=SessionLocal()
-
     existing_file = db.query(UploadedFile).filter(UploadedFile.filename == file.filename).first()
     if existing_file:
         return templates.TemplateResponse("home.html",
-                                          {"request": request, "message": "File with the same name already exists in db. \n Awaiting new upload ...", "filename": file.filename})
+                                          {"request": request, "message": "File with the same name already exists in db."
+                                                                          " \n Awaiting new upload ...", "filename": file.filename})
     else:
         db.add(new_file)
         db.commit()
         db.close()
-        return templates.TemplateResponse("home.html", {"request": request, "message": "Success ! \n Awaiting new upload ...", "filename": file.filename})
+        return templates.TemplateResponse("home.html", {"request": request, "message": "Success ! \n Awaiting new upload ...",
+                                                        "filename": file.filename})
 
 
 @app.post('/getSummary')
