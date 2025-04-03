@@ -7,15 +7,9 @@ This capability enables users to quickly and efficiently distill large amounts o
 # Getting Started
 DBQKAF requires some modules to be installed, install them by running the following command.
 
-<img width="200" alt="image" src="https://github.com/yajatgrover9/DBQKAF_OpenAI/assets/160128959/be7c8791-984f-475f-b4fe-ab13231a4043">
-
-Import correct modules
-
-<img width="518" alt="image" src="https://github.com/yajatgrover9/DBQKAF_OpenAI/assets/160128959/f46cfb4f-7f69-4ca2-a035-51421533ca02">
-
-Getting the uploaded file from user and storing unique files in db.
-
-<img width="797" alt="image" src="https://github.com/yajatgrover9/DBQKAF_OpenAI/assets/160128959/eb4eb50e-e29a-42fa-95cb-b2840835c71a">
+```bash
+pip install -r requirements.txt
+```
 
 # Run the App using "python openai_fastapi.py"
 
